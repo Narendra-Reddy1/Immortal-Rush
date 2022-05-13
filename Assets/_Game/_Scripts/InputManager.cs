@@ -13,10 +13,19 @@ namespace Naren_Dev
 
         private ControlHub m_inputActions;
         public Vector2 moveAxis = Vector2.zero;
-        
+
         #endregion
 
+        #region Unity Built-In Methods
 
+        private void Awake()
+        {
+            if (instance != this && instance != null) Destroy(gameObject);
+            else if (instance == null) instance = this;
+
+            m_inputActions = new ControlHub();
+            m_inputActions.Enable();
+        }
 
         private void OnEnable()
         {
@@ -30,19 +39,17 @@ namespace Naren_Dev
             m_inputActions.Player.Movement.canceled -= _ => GetInput();
         }
 
-        private void Awake()
-        {
-            if (instance != this && instance != null) Destroy(gameObject);
-            else if (instance == null) instance = this;
 
-            m_inputActions = new ControlHub();
-            m_inputActions.Enable();
-        }
+
+        #endregion
+
+        #region Custom Methods
 
         private void GetInput()
         {
             moveAxis = m_inputActions.Player.Movement.ReadValue<Vector2>();
         }
 
+        #endregion
     }
 }
