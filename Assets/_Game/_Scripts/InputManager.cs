@@ -12,7 +12,7 @@ namespace Naren_Dev
         #region Variables
 
         private ControlHub m_inputActions;
-        public Vector2 moveAxis = Vector2.zero;
+        public Vector2 moveAxis { get; private set; }
 
         #endregion
 
@@ -39,7 +39,10 @@ namespace Naren_Dev
             m_inputActions.Player.Movement.canceled -= _ => GetInput();
         }
 
-
+        private void OnDestroy()
+        {
+            m_inputActions.Disable();
+        }
 
         #endregion
 
