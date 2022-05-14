@@ -15,6 +15,7 @@ namespace Naren_Dev
             pawn.SetActive(true);
             m_attachPosition.position = new Vector3(m_attachPosition.position.x, m_attachPosition.position.y,
                 m_attachPosition.position.z - m_attachPosition.transform.localScale.z);
+            pawn.GetComponent<Collider>().enabled = false;
         }
     }
 }
