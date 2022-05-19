@@ -153,6 +153,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
+    Android: com.DefaultCompany.ImmortalRush
     Standalone: com.DefaultCompany.ImmortalRush
   buildNumber:
     Standalone: 0

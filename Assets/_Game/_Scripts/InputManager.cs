@@ -11,6 +11,8 @@ namespace Naren_Dev
 
         #region Variables
 
+     //   [SerializeField] private VariableJoystick m_joystick;
+
         private ControlHub m_inputActions;
         public Vector2 moveAxis { get; private set; }
 
@@ -26,6 +28,11 @@ namespace Naren_Dev
             m_inputActions = new ControlHub();
             m_inputActions.Enable();
         }
+
+        //private void Update()
+        //{
+        //    GetInput();
+        //}
 
         private void OnEnable()
         {
@@ -51,6 +58,7 @@ namespace Naren_Dev
         private void GetInput()
         {
             moveAxis = m_inputActions.Player.Movement.ReadValue<Vector2>();
+       //    SovereignUtils.Log(moveAxis);
         }
 
         #endregion

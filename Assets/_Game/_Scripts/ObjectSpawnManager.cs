@@ -43,7 +43,7 @@ public class ObjectSpawnManager
         for (int i = 0; i < count; i++)
         {
             spawnedObjectsList.Add(Object.Instantiate(targetObjectToSpawn, positionsToSpawn[i].position, Quaternion.identity, parent));
-        }
+        }   
     }
 
     #endregion
