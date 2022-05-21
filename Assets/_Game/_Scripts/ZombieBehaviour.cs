@@ -99,7 +99,10 @@ namespace Naren_Dev
             {
                 _ApplyAnimations("canAttack", true);
             }
-            _ApplyAnimations("canAttack", false);
+            else
+                _ApplyAnimations("canAttack", false);
+            //Debug.Log($"Boolean: {Vector3.Distance(m_transform.position, m_targetToAttack.position) <= m_stoppingDistance}, Distance: {Vector3.Distance(m_transform.position, m_targetToAttack.position)}, Stopping Distance: {m_stoppingDistance}");
+
         }
 
 

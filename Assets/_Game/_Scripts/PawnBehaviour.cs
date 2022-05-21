@@ -41,7 +41,7 @@ namespace Naren_Dev
 
         //}
 
-      
+
 
         private void OnTriggerEnter(Collider other)
         {
@@ -86,7 +86,7 @@ namespace Naren_Dev
             SovereignUtils.Log(m_tempMaterials.Count);
             foreach (Material mat in m_tempMaterials)
             {
-                mat.color = new Color(183f, 183, 183, 255);
+                mat.color = Color.gray;
             }
         }
 

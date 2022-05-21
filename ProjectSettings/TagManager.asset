@@ -8,6 +8,7 @@ TagManager:
   - Obstacle
   - zombie
   - ZombieTrigger
+  - Bullet
   layers:
   - Default
   - TransparentFX
@@ -18,8 +19,8 @@ TagManager:
   - Pawn
   - Obstacle
   - Zombie
-  - 
-  - 
+  - Player
+  - Bullet
   - 
   - 
   - 

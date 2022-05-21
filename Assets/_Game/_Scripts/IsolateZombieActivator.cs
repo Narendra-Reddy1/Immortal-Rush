@@ -9,7 +9,9 @@ namespace Naren_Dev
     {
         #region Variables
 
-        public ZombieEventsSO zombieEventsSO;
+        [SerializeField] private ZombieEventsSO zombieEventsSO;
+
+        [SerializeField] private List<Transform> m_zombiesList = new List<Transform>();
 
         #endregion
 
@@ -17,7 +19,10 @@ namespace Naren_Dev
         {
             if (other.CompareTag("Player") || other.CompareTag("Pawn"))
             {
+                //Debug.Log("<Color="Green">IsolateZombie Activated </Color>");
+                SovereignUtils.Log($"IsolateZombies are Triggered");
                 zombieEventsSO.TriggerIsolateZombie?.Invoke();
+                zombieEventsSO.OnZombieActivated?.Invoke(m_zombiesList);
             }
         }
 
