@@ -4,8 +4,8 @@ using UnityEngine.Events;
 
 namespace Naren_Dev
 {
-    [CreateAssetMenu(fileName = "New PawnEventsSO", menuName = "ScriptableObjects/PawnEvents")]
-    public class PawnEventsSo : BaseScriptableObject
+    [CreateAssetMenu(fileName = "New PawnEventsSO", menuName = "ScriptableObjects/Events/Pawn Events")]
+    public class PawnEventsSO : BaseScriptableObject
     {
         [Space]
         public Action<object> OnPawnStartFollowingPlayer;

@@ -21,20 +21,18 @@ namespace Naren_Dev
 
         #region Variables
 
+        [SerializeField] private uint m_gap = 10;
+        [SerializeField] private float m_snakeMoveSpeed;
+        [SerializeField] private float m_minDistance = 0.25f;
+
         [SerializeField] private Transform m_attachPosition;
         [SerializeField] private List<Transform> m_followingPawns;
-        [SerializeField] private float m_snakeMoveSpeed;
         [SerializeField] private List<Vector3> m_positionsHistory;
-        [SerializeField] private float m_minDistance = 0.25f;
-        [SerializeField] private uint m_gap = 10;
-        [SerializeField] private UIEventsSO m_UIEventsHolder;
-
+        [SerializeField] private UIEventsSO m_UIEvents;
 
         private WaitForEndOfFrame m_waitForEndOfFrame = new WaitForEndOfFrame();
         //   [SerializeField] private PawnEventsSo m_pawnEventsSO;
         #endregion
-
-
 
         public static UnityAction<Transform> OnPawnCollidedWithObstacle;
 
@@ -69,6 +67,8 @@ namespace Naren_Dev
                 case "Pawn":
                     WhenPlayerAcquiredNewPawn(other.gameObject);
                     break;
+                case "ZombieTrigger":
+
 
                 default:
 
@@ -153,7 +153,7 @@ namespace Naren_Dev
         private IEnumerator UpdateAtEndOfTheFrame()
         {
             yield return m_waitForEndOfFrame;
-            m_UIEventsHolder.OnTextUpdated?.Invoke(GetActiveFollowingPawnsCount());
+            m_UIEvents.OnTextUpdated?.Invoke(GetActiveFollowingPawnsCount());
         }
 
         #endregion

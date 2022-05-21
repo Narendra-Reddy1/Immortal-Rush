@@ -24,10 +24,12 @@ namespace Naren_Dev
         private Vector2 m_moveAxis;
 
         [SerializeField] private float m_playerMovementSpeed;
+        [SerializeField] private float m_maxSteerAngle;
         [SerializeField] private float m_steerSpeed;
 
         [SerializeField] private Rigidbody m_playerRb;
         [SerializeField] private VariableJoystick m_joyStick;
+        
 
         #endregion
 
@@ -70,8 +72,8 @@ namespace Naren_Dev
             // Vector3 moveDirection = new Vector3(m_steerSpeed * m_moveAxis.x, 0f, m_playerMovementSpeed) * Time.smoothDeltaTime;
             //   transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(Vector3.up * m_steerSpeed * m_moveAxis.x), 10 * Time.deltaTime);
 
-            Vector3 moveDirection = new Vector3(m_steerSpeed * m_joyStick.Horizontal, 0f, m_playerMovementSpeed) * Time.smoothDeltaTime;
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(Vector3.up * m_steerSpeed * m_joyStick.Horizontal), 10 * Time.smoothDeltaTime);
+            Vector3 moveDirection = new Vector3(m_maxSteerAngle * m_joyStick.Horizontal, 0f, m_playerMovementSpeed) * Time.smoothDeltaTime;
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(Vector3.up * m_maxSteerAngle * m_joyStick.Horizontal), m_steerSpeed * Time.smoothDeltaTime);
             m_playerRb.velocity = moveDirection;
             // SovereignUtils.Log(moveDirection + " " + m_moveAxis);
         }

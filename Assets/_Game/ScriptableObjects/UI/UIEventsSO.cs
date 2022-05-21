@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 namespace Naren_Dev
 {
-    [CreateAssetMenu(fileName = "UI Events Holder", menuName = "ScriptableObjects/Events")]
+    [CreateAssetMenu(fileName = "UI Events Holder", menuName = "ScriptableObjects/Events/UI Events")]
     public class UIEventsSO : BaseScriptableObject
     {
         [Space]
