@@ -11,11 +11,11 @@ namespace Naren_Dev
         //   [SerializeField] private PawnEventsSo m_pawnEvetsSO;
 
 
-        [SerializeField] private bool m_isDummy = false;
-        [SerializeField] SkinnedMeshRenderer meshRenderer;
+        //  [SerializeField] private bool m_isDummy = false;
+        //[SerializeField] SkinnedMeshRenderer meshRenderer;
         [SerializeField] private Animator m_pawnAnimator;
-        List<Material> m_tempMaterials;
-        List<Material> m_originalMaterials;
+        // List<Material> m_tempMaterials;
+        //List<Material> m_originalMaterials;
 
         #endregion
 
@@ -24,7 +24,7 @@ namespace Naren_Dev
         private void Awake()
         {
             _Init();
-            CorruptMaterial();
+            //   CorruptMaterial();
 
         }
 
@@ -71,33 +71,33 @@ namespace Naren_Dev
 
         private void _Init()
         {
-            m_tempMaterials = new List<Material>();
-            if (meshRenderer == null) TryGetComponent(out meshRenderer);
+            //m_tempMaterials = new List<Material>();
+            //if (meshRenderer == null) TryGetComponent(out meshRenderer);
             if (m_pawnAnimator == null) TryGetComponent(out m_pawnAnimator);
         }
 
 
-        private void CorruptMaterial()
-        {
-            if (!m_isDummy) return;
-            m_pawnAnimator.enabled = false;
-            m_tempMaterials = meshRenderer.materials.ToList();
-            m_originalMaterials = m_tempMaterials;
-            SovereignUtils.Log(m_tempMaterials.Count);
-            foreach (Material mat in m_tempMaterials)
-            {
-                mat.color = Color.gray;
-            }
-        }
+        //private void CorruptMaterial()
+        //{
+        //    if (!m_isDummy) return;
+        //    m_pawnAnimator.enabled = false;
+        //    m_tempMaterials = meshRenderer.materials.ToList();
+        //    m_originalMaterials = m_tempMaterials;
+        //    SovereignUtils.Log(m_tempMaterials.Count);
+        //    foreach (Material mat in m_tempMaterials)
+        //    {
+        //        mat.color = Color.gray;
+        //    }
+        //}
 
-        public void ResetMaterials()
-        {
-            int count = m_tempMaterials.Count;
-            for (int i = 0; i < count; i++)
-            {
-                m_tempMaterials[i] = m_originalMaterials[i];
-            }
-        }
+        //public void ResetMaterials()
+        //{
+        //    int count = m_tempMaterials.Count;
+        //    for (int i = 0; i < count; i++)
+        //    {
+        //        m_tempMaterials[i] = m_originalMaterials[i];
+        //    }
+        //}
 
         public void SetFollowTargetToPawn(GameObject pawn, ref Transform m_attachPosition)
         {

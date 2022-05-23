@@ -30,6 +30,7 @@ namespace Naren_Dev
         [SerializeField] private List<Vector3> m_positionsHistory;
         [SerializeField] private UIEventsSO m_UIEvents;
 
+        [SerializeField] private HealthManager m_healthManager;
         private WaitForEndOfFrame m_waitForEndOfFrame = new WaitForEndOfFrame();
         //   [SerializeField] private PawnEventsSo m_pawnEventsSO;
         #endregion
@@ -64,12 +65,15 @@ namespace Naren_Dev
         {
             switch (other.transform.tag)
             {
-                case "Pawn":
+                case "pawn shadow":
                     WhenPlayerAcquiredNewPawn(other.gameObject);
                     break;
-                case "ZombieTrigger":
-
-
+                case "zombie":
+                    m_healthManager.TakeDamage(1.5f);
+                    if (m_healthManager.isDead)
+                        m_healthManager.Kill(OnHealthIsZero);
+                    m_UIEvents.OnHealthUpdated?.Invoke(-1.5f / m_healthManager.healthStats.maxHealth);
+                    break;
                 default:
 
                     break;
@@ -138,6 +142,7 @@ namespace Naren_Dev
             SovereignUtils.Log(" Index: " + index);
         }
 
+        //Lose pawns
         private void WheneverPawnCollidedWithObstacle(Transform pawn)
         {
             if (m_followingPawns.Contains(pawn))
@@ -149,6 +154,25 @@ namespace Naren_Dev
                 StartCoroutine(UpdateAtEndOfTheFrame());
             }
 
+        }
+
+        //Lose Pawns
+        private void OnHealthIsZero()
+        {
+            if (GetActiveFollowingPawnsCount() == 0)
+            {
+                ///GAME OVER.
+                return;
+            }
+
+            SovereignUtils.Log("PlayerManager: OnHealthIsZero");
+
+            m_followingPawns[index].gameObject.SetActive(false);
+            index--;
+            m_healthManager.Heal(m_healthManager.healthStats.maxHealth);
+            m_UIEvents.OnHealthUpdated?.Invoke(m_healthManager.currentHealth);
+            m_healthManager.isDead = false;
+            StartCoroutine(UpdateAtEndOfTheFrame());
         }
         private IEnumerator UpdateAtEndOfTheFrame()
         {

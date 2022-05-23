@@ -9,6 +9,7 @@ TagManager:
   - zombie
   - ZombieTrigger
   - Bullet
+  - pawn shadow
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - Zombie
   - Player
   - Bullet
-  - 
+  - Pawn Shadow
   - 
   - 
   - 

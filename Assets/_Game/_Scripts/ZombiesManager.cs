@@ -27,12 +27,12 @@ namespace Naren_Dev
         private void OnEnable()
         {
             m_zombieEventsSO.TriggerZombie += _TriggerZombiesHord;
-            m_zombieEventsSO.TriggerIsolateZombie += _TriggerIsolateZombie;
+           // m_zombieEventsSO.TriggerIsolateZombie += _TriggerIsolateZombie;
         }
         private void OnDisable()
         {
             m_zombieEventsSO.TriggerZombie -= _TriggerZombiesHord;
-            m_zombieEventsSO.TriggerIsolateZombie -= _TriggerIsolateZombie;
+         //   m_zombieEventsSO.TriggerIsolateZombie -= _TriggerIsolateZombie;
 
         }
 
@@ -52,9 +52,7 @@ namespace Naren_Dev
 
         private void _TriggerIsolateZombie()
         {
-            if (index >= m_isolateZombiesList.Count) return;
-            m_isolateZombiesList[index].TriggerIsolateZombies();
-            index++;
+            
         }
 
         #endregion

@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: X-Ray_mat
+  m_Shader: {fileID: -6465566751694194690, guid: a7ee1a73b87a912488d3238f14c1b566, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - Vector1_2bbb2d858dfb4c38b450dedf725baabd: 10
+    - Vector1_3f454aa056524b9a916d32958f89c61c: 0.5
+    - Vector1_b128b32f5fec4e8b8ce5c0cd1a385be6: 3
+    - _FresnalPower: 2
+    m_Colors:
+    - Color_9f5fa856abb646ac899faa2b9082ea22: {r: 1.254902, g: 5.521569, b: 8, a: 0}
+    - Vector2_3f25eda817b141ae9481a2d962c601ce: {r: 0.5, g: 30, b: 0, a: 0}
+    - Vector2_c6ee57074e8a4fbd94dfe43e9c804a59: {r: 1, g: 1, b: 0, a: 0}
+  m_BuildTextureStacks: []

@@ -15,10 +15,9 @@ namespace Naren_Dev
         [SerializeField] private NavMeshAgent m_agent;
         [SerializeField] private Animator m_zombieAnimator;
         [SerializeField] private WaitForSeconds m_waitForSeconds = new WaitForSeconds(2f);
-        [Space(2)]
-        public ZombieEventsSO m_zombieEventsSO;
-        private Transform m_transform;
 
+        private Transform m_transform;
+        // private ParameterType m_parameterType;
         #endregion
 
 
@@ -29,17 +28,6 @@ namespace Naren_Dev
         {
             _Init();
         }
-
-        //private void OnEnable()
-        //{
-        //    m_zombieEventsSO.TriggerIsolateZombie += _TriggerIsolateZombies;
-        //}
-        //private void OnDisable()
-        //{
-        //    m_zombieEventsSO.TriggerIsolateZombie -= _TriggerIsolateZombies;
-
-        //}
-
 
         private void Update()
         {
@@ -75,12 +63,12 @@ namespace Naren_Dev
 
         private IEnumerator WaitUntilWakeUp()
         {
-            m_zombieAnimator.enabled = true;
+           // m_zombieAnimator.enabled = true;
+
             ///Wake up Animation lasts for 2.25 seconds.
             yield return m_waitForSeconds;
             m_canChaseTarget = true;
         }
-
         private void ChaseTarget()
         {
             if (m_targetToAttack == null || !m_canChaseTarget) return;
@@ -97,24 +85,78 @@ namespace Naren_Dev
         {
             if (Vector3.Distance(m_transform.position, m_targetToAttack.position) <= m_stoppingDistance)
             {
-                _ApplyAnimations("canAttack", true);
+                _ApplyAnimations(ParameterType.BOOL, "canAttack", true);
             }
             else
-                _ApplyAnimations("canAttack", false);
+                _ApplyAnimations(ParameterType.BOOL, "canAttack", false);
             //Debug.Log($"Boolean: {Vector3.Distance(m_transform.position, m_targetToAttack.position) <= m_stoppingDistance}, Distance: {Vector3.Distance(m_transform.position, m_targetToAttack.position)}, Stopping Distance: {m_stoppingDistance}");
-
         }
 
-
-        private void _ApplyAnimations(string id, bool value)
+        public void OnHealthIsZero()
         {
-            m_zombieAnimator.SetBool(id, value);
+            _ApplyAnimations(ParameterType.TRIGGER, "Dead");
+        }
+        private void _ApplyAnimations(ParameterType parameterType, string id, object value = null)
+        {
+
+
+            switch (parameterType)
+            {
+                case ParameterType.INT:
+
+                    m_zombieAnimator.SetInteger(id, (int)value);
+
+                    break;
+                case ParameterType.FLOAT:
+
+                    m_zombieAnimator.SetFloat(id, (float)value);
+                    break;
+                case ParameterType.BOOL:
+                    m_zombieAnimator.SetBool(id, (bool)value);
+                    break;
+                case ParameterType.TRIGGER:
+                    m_zombieAnimator.SetTrigger(id);
+
+                    break;
+            }
+
+
         }
 
+
+
+
+
+
+        private void OnTriggerEnter(Collider other)
+        {
+            switch (other.tag)
+            {
+                case "Bullet":
+                    HealthManager healthManager = GetComponent<HealthManager>();
+                    healthManager.TakeDamage(.5f);
+                    if (healthManager.isDead)
+                        OnHealthIsZero();
+
+                    break;
+
+                default:
+                    break;
+            }
+        }
 
         #endregion
 
 
 
+    }
+
+    //Animation Parameter Type
+    public enum ParameterType
+    {
+        INT,
+        FLOAT,
+        BOOL,
+        TRIGGER
     }
 }
