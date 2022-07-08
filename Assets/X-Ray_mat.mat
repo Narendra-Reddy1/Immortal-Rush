@@ -37,7 +37,7 @@ Material:
     - Vector1_b128b32f5fec4e8b8ce5c0cd1a385be6: 3
     - _FresnalPower: 2
     m_Colors:
-    - Color_9f5fa856abb646ac899faa2b9082ea22: {r: 1.254902, g: 5.521569, b: 8, a: 0}
+    - Color_9f5fa856abb646ac899faa2b9082ea22: {r: 95.87451, g: 0, b: 33.129414, a: 0}
     - Vector2_3f25eda817b141ae9481a2d962c601ce: {r: 0.5, g: 30, b: 0, a: 0}
     - Vector2_c6ee57074e8a4fbd94dfe43e9c804a59: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []

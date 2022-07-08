@@ -21,10 +21,10 @@ namespace Naren_Dev
             {
                 //Debug.Log("<Color="Green">IsolateZombie Activated </Color>");
                 SovereignUtils.Log($"IsolateZombies are Triggered");
-                foreach (Transform zombie in m_zombiesList)
-                {
-                    zombie.GetComponent<ZombieBehaviour>().TriggerIsolateZombies();
-                }
+                //foreach (Transform zombie in m_zombiesList)
+                //{
+                //    zombie.GetComponent<ZombieBehaviour>().TriggerIsolateZombies();
+                //}
                 zombieEventsSO.OnZombieActivated?.Invoke(m_zombiesList);
             }
         }

@@ -17,7 +17,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &4563635349623496
 Transform:
@@ -90,7 +90,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1405028216340584}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 623d4d1e7b89a1d4ca29054478af4256, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.16252095

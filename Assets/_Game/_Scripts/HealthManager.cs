@@ -38,6 +38,21 @@ namespace Naren_Dev
                 isDead = true;
         }
 
+        public void TakeDamage(float damage, System.Action OnHealthIsZero)
+        {
+
+            currentHealth = Mathf.Clamp(currentHealth - damage, 0, healthStats.maxHealth);
+            SovereignUtils.Log($"Damage: {damage}, CurrentHealth {currentHealth}");
+            if (currentHealth == 0)
+            {
+                isDead = true;
+                OnHealthIsZero.Invoke();
+            }
+
+
+        }
+
+
         public void Heal(float health)
         {
             currentHealth = Mathf.Clamp(currentHealth + health, 0, healthStats.maxHealth);

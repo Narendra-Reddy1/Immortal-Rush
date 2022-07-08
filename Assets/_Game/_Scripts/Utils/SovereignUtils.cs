@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SovereignUtils
 {
+    //public 
     public static void Log(object s)
     {
 

@@ -32,9 +32,15 @@ namespace Naren_Dev
         [SerializeField] private PlayerVariables m_playerVariables;
         [SerializeField] private PlayerShooting m_playerShooting;
 
+        public bool control;
         #endregion
 
         #region Unity Built-In Methods
+
+        private void Awake()
+        {
+            control = true;
+        }
 
         private void Reset()
         {
@@ -68,27 +74,11 @@ namespace Naren_Dev
 
         private void _ApplyMovement()
         {
-            // Vector3 moveDirection = new Vector3(m_steerSpeed * m_moveAxis.x, 0f, m_playerMovementSpeed) * Time.smoothDeltaTime;
-            //   transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(Vector3.up * m_steerSpeed * m_moveAxis.x), 10 * Time.deltaTime);
-            if (!m_playerVariables.isPlayerShooting && m_playerShooting.m_nearestEnemy == null)
-            {
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(Vector3.up * m_maxSteerAngle * m_joyStick.Horizontal), m_steerSpeed * Time.smoothDeltaTime);
-                Vector3 moveDirection = new Vector3(m_maxSteerAngle * m_joyStick.Horizontal, 0f, m_playerMovementSpeed) * Time.smoothDeltaTime;
-                m_playerRb.velocity = moveDirection;
-            }
-            else
-                _GoForZombies();
-            // SovereignUtils.Log(moveDirection + " " + m_moveAxis);
-        }
-
-        private void _GoForZombies()
-        {
-            Debug.DrawRay(transform.position, m_playerShooting.m_nearestEnemy.position - transform.position, Color.blue);
-            transform.LookAt(m_playerShooting.m_nearestEnemy);
-            Vector3 direction = (m_playerShooting.m_nearestEnemy.position - transform.position);
-            Vector3 moveDirection = new Vector3(direction.x * m_maxSteerAngle * 2f  * m_joyStick.Horizontal, 0f, m_playerMovementSpeed / 100 * direction.z) * Time.deltaTime;
+            if (!control) return;
+            if (!m_playerVariables.isPlayerShooting)
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(Vector3.up * m_maxSteerAngle * m_joyStick.Horizontal), m_steerSpeed * Time.deltaTime);
+            Vector3 moveDirection = new Vector3(m_steerSpeed * m_joyStick.Horizontal, 0f, m_playerMovementSpeed) * Time.smoothDeltaTime;
             m_playerRb.velocity = moveDirection;
-            //m_playerRb.MovePosition(transform.position - m_playerShooting.m_nearestEnemy.position);
         }
 
         // TODO: Need to implement.

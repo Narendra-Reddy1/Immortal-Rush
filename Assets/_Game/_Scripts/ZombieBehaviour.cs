@@ -15,6 +15,8 @@ namespace Naren_Dev
         [SerializeField] private NavMeshAgent m_agent;
         [SerializeField] private Animator m_zombieAnimator;
         [SerializeField] private WaitForSeconds m_waitForSeconds = new WaitForSeconds(2f);
+        [SerializeField] private HealthManager healthManager;
+        [SerializeField] private ZombieEventsSO m_zombieEvents;
 
         private Transform m_transform;
         // private ParameterType m_parameterType;
@@ -53,22 +55,22 @@ namespace Naren_Dev
             m_agent.stoppingDistance = m_stoppingDistance;
         }
 
-        public void TriggerIsolateZombies()
-        {
+        //public void TriggerIsolateZombies()
+        //{
 
-            StartCoroutine(WaitUntilWakeUp());
+        //    StartCoroutine(WaitUntilWakeUp());
 
-        }
+        //}
 
 
-        private IEnumerator WaitUntilWakeUp()
-        {
-           // m_zombieAnimator.enabled = true;
+        //private IEnumerator WaitUntilWakeUp()
+        //{
+        //    // m_zombieAnimator.enabled = true;
 
-            ///Wake up Animation lasts for 2.25 seconds.
-            yield return m_waitForSeconds;
-            m_canChaseTarget = true;
-        }
+        //    ///Wake up Animation lasts for 2.25 seconds.
+        //    yield return m_waitForSeconds;
+        //    m_canChaseTarget = true;
+        //}
         private void ChaseTarget()
         {
             if (m_targetToAttack == null || !m_canChaseTarget) return;
@@ -89,12 +91,15 @@ namespace Naren_Dev
             }
             else
                 _ApplyAnimations(ParameterType.BOOL, "canAttack", false);
-            //Debug.Log($"Boolean: {Vector3.Distance(m_transform.position, m_targetToAttack.position) <= m_stoppingDistance}, Distance: {Vector3.Distance(m_transform.position, m_targetToAttack.position)}, Stopping Distance: {m_stoppingDistance}");
         }
 
         public void OnHealthIsZero()
         {
+            GetComponent<CapsuleCollider>().enabled = false;
+            Destroy(GetComponent<Rigidbody>());
             _ApplyAnimations(ParameterType.TRIGGER, "Dead");
+            m_zombieEvents.OnZombieDead?.Invoke(this.transform);
+
         }
         private void _ApplyAnimations(ParameterType parameterType, string id, object value = null)
         {
@@ -124,7 +129,10 @@ namespace Naren_Dev
         }
 
 
-
+        public void OnHitWithBullet(float damage)
+        {
+            healthManager.TakeDamage(damage, OnHealthIsZero);
+        }
 
 
 
@@ -137,7 +145,7 @@ namespace Naren_Dev
                     healthManager.TakeDamage(.5f);
                     if (healthManager.isDead)
                         OnHealthIsZero();
-
+                    SovereignUtils.Log("Bullet Hitted");
                     break;
 
                 default:

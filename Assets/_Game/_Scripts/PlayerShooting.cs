@@ -8,15 +8,25 @@ namespace Naren_Dev
     {
         #region Variables
 
+        [SerializeField] private GunStats m_gunStats;
+
         [Header("Shoot")]
         [Space(4)]
         [SerializeField] private Transform m_muzzleEnd;
         [SerializeField] private float m_fireRate;
-        [SerializeField] private GameObject m_bullet;
-        [SerializeField] private Transform m_transform;
         [SerializeField] private GameObject m_muzzleFlashEffect;
         [SerializeField] private PlayerVariables m_playerVariables;
+        [Tooltip("Usually the zombie collider height. Give slight less value than collider height for accurate results")]
+        [SerializeField] private float m_raycastOffsetHeight;
         private float m_fireRateDelay;
+        [SerializeField] private LineRenderer m_lineRenderer;
+
+
+        [Header("Ammunition")]
+        [SerializeField] private GameObject m_bullet;
+        [SerializeField] private int m_ammunitionPoolSize;
+        [SerializeField] private List<GameObject> m_ammunitionPool;
+        [SerializeField] private Transform m_ammunitionParent;
 
         [Header("Zombies")]
         [Space(4)]
@@ -27,8 +37,7 @@ namespace Naren_Dev
         [SerializeField] private float m_enemyDetectionRange;
         [SerializeField] private List<Transform> m_activatedZombiesList;
 
-
-
+        private Transform m_transform;
         private RaycastHit m_enemyHit;
         #endregion
 
@@ -39,14 +48,17 @@ namespace Naren_Dev
         private void Awake()
         {
             _Init();
+            //  InitializeAmmunitionPool();
         }
         private void OnEnable()
         {
             m_zombieEvents.OnZombieActivated.AddListener(SetActivatedEnemiesList);
+            m_zombieEvents.OnZombieDead.AddListener(PopDeadZombieFromActivateList);
         }
         private void OnDisable()
         {
             m_zombieEvents.OnZombieActivated.RemoveListener(SetActivatedEnemiesList);
+            m_zombieEvents.OnZombieDead.RemoveListener(PopDeadZombieFromActivateList);
         }
 
         private void Update()
@@ -54,12 +66,18 @@ namespace Naren_Dev
             _Shoot();
         }
 
+        private void Reset()
+        {
+            //   m_ammunitionPoolSize = 30;
+            m_raycastOffsetHeight = 1f;
+        }
+
 
         private void OnDrawGizmos()
         {
             //if (m_nearestEnemy == null) return;
-            Gizmos.DrawWireSphere(m_muzzleEnd.position, m_enemyDetectionRange);
-            Gizmos.color = Color.red;
+            //   Gizmos.DrawWireSphere(m_muzzleEnd.position, m_enemyDetectionRange);
+            // Gizmos.color = Color.red;
             //Gizmos.DrawRay(m_muzzleEnd.position, ((m_nearestEnemy.position - m_muzzleEnd.position)));
         }
 
@@ -70,69 +88,75 @@ namespace Naren_Dev
         private void _Init()
         {
             m_transform = transform;
+            m_fireRate = m_gunStats.fireRate;
             m_fireRateDelay = m_fireRate;
-            m_activatedZombiesList = new List<Transform>();
         }
 
+        //Ammunition 
+        private void InitializeAmmunitionPool()
+        {
+            ObjectPooler.InitializePool(m_bullet, m_ammunitionPoolSize, m_ammunitionPool, m_ammunitionParent);
+        }
 
+        private GameObject GetBullet()
+        {
+            return ObjectPooler.GetObjectFromPool(m_ammunitionPool);
+        }
 
-
+        private ZombieBehaviour zombieBehaviour;
         private void _Shoot()
         {
-            ///Sphere cast for zombies when zombie activator is triggered. ===>Handled by GetNearbyEnemy method.
-            ///Else stop searching for enemies.
-            ///If zombies are found in searching, shoot at nearest zombies 
-            ///
-            //_GetNearbyEnemy(ref m_nearestEnemy);
-            //if (m_nearestEnemy == null) return;
-            if (m_activatedZombiesList.Count <= 0)
+            if (Time.time < m_fireRateDelay)
             {
+                m_lineRenderer.enabled = false;
+                return;
+            }
+            else if (m_activatedZombiesList.Count <= 0)
+            {
+                m_nearestEnemy = null;
                 m_playerVariables.isPlayerShooting = false;
                 return;
             }
-
             FetchForNearbyEnemy();
-           
-            //  transform.rotation = Quaternion.Slerp(m_transform.rotation, m_nearestEnemy.rotation, 1 * Time.deltaTime);
-            m_playerVariables.isPlayerShooting = true;
-
-            if (Physics.Raycast(m_muzzleEnd.position, (m_nearestEnemy.position - m_muzzleEnd.position), m_nearestEnemy.position.sqrMagnitude / 2
-                , m_enemyLayer.value))
+            if (!m_nearestEnemy.Equals(prevZombie))
             {
-                SovereignUtils.Log($"FireRate: {m_fireRate}, FireRateDelay {m_fireRateDelay}, Time.time: {Time.time}");
-                if (Time.time < m_fireRateDelay) return;
+                zombieBehaviour = m_nearestEnemy.GetComponent<ZombieBehaviour>();
+            }
+            m_playerVariables.isPlayerShooting = true;
+            m_transform.LookAt(m_nearestEnemy);
+            m_muzzleEnd.LookAt(m_nearestEnemy);
+            if (Physics.Raycast(m_muzzleEnd.position, (m_nearestEnemy.position - m_muzzleEnd.position) + Vector3.up, out m_enemyHit, m_nearestEnemy.position.sqrMagnitude / 2, m_enemyLayer.value))
+            {
+
+                m_lineRenderer.SetPosition(0, m_muzzleEnd.position);
+                m_lineRenderer.enabled = true;
                 m_fireRateDelay = m_fireRate + Time.time;
-                _FireBullet();
-                Debug.DrawRay(m_muzzleEnd.position, (m_nearestEnemy.position - m_muzzleEnd.position) + (Vector3.up * 1.5f), Color.red, 1f);
-                SovereignUtils.Log("Shooting");
+                m_lineRenderer.SetPosition(1, m_enemyHit.point);
+                OnEnemyHitWithBullet(zombieBehaviour);
+                prevZombie = m_nearestEnemy;
+            }
+        }
+        private bool isSameEnemy = false;
+        private Transform prevZombie;
+        private void OnEnemyHitWithBullet(ZombieBehaviour zombie)
+        {
+            try
+            {
+
+                zombie.OnHitWithBullet(m_gunStats.bulletDamage);
+            }
+            catch (System.Exception e)
+            {
+                SovereignUtils.LogError($"Error From PlayerShooting: {System.Reflection.MethodBase.GetCurrentMethod().Name} {e.Message}");
             }
         }
 
-        //private void _GetNearbyEnemy(ref Transform enemy)
-        //{
-        //    //Physics.SphereCast()
-        //    bool casted = Physics.SphereCast(m_transform.position, m_enemyDetectionRange, Vector3.forward, out m_enemyHit, m_enemyDetectionRange, m_enemyLayer);
-        //    SovereignUtils.Log("Casted: " + casted);
-
-        //    //SovereignUtils.Log("IsEnemyAvailable: " + isEnemyAvailbale);
-        //    if (m_enemyHit.collider == null)
-        //    {
-        //        //m_canSearchForEnemies = false;
-        //        // m_nearestEnemy = null;
-        //        return;
-        //    }
-        //    m_nearestEnemy = m_enemyHit.collider.transform;
-        //    SovereignUtils.Log("Nearby Enemy Name: " + m_nearestEnemy.name);
-        //}
-
-        private void _FireBullet()
+        private void PopDeadZombieFromActivateList(object args)
         {
-            //   GameObject muzzleFlash = Instantiate(m_muzzleFlashEffect, m_muzzleEnd.position, Quaternion.identity, m_muzzleEnd);
-            //   muzzleFlash.GetComponent<ParticleSystem>().Play();
-            //m_muzzleFlashEffect.GetComponent<ParticleSystem>().Stop();
-            m_muzzleFlashEffect.GetComponent<ParticleSystem>().Play();
-            GameObject bullet = Instantiate(m_bullet, m_muzzleEnd.position, Quaternion.identity);
-            bullet.GetComponent<BulletBehaviour>().Fire(m_nearestEnemy.position - m_muzzleEnd.position);
+            if (m_activatedZombiesList.Contains((Transform)args))
+            {
+                m_activatedZombiesList.Remove((Transform)args);
+            }
         }
         private void SetActivatedEnemiesList(object args)
         {
@@ -140,6 +164,7 @@ namespace Naren_Dev
             m_activatedZombiesList.AddRange(zombieList);
             SovereignUtils.Log($"Activated Zombies: {m_activatedZombiesList.Count}");
         }
+
         private void FetchForNearbyEnemy()
         {
             //   float dist = 0;
@@ -160,6 +185,7 @@ namespace Naren_Dev
                 }
             }
         }
+
         #endregion
     }
 }

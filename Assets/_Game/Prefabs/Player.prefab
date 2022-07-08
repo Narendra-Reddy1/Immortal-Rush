@@ -1098,10 +1098,11 @@ GameObject:
   m_Component:
   - component: {fileID: 3464459384805876111}
   - component: {fileID: 7194259968075049988}
+  - component: {fileID: 3466082175559286190}
   - component: {fileID: 3270745335097201301}
   - component: {fileID: 7046949536015023693}
-  - component: {fileID: 3466082175559286190}
   - component: {fileID: 4377249849494532583}
+  - component: {fileID: 6181285856241504328}
   m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
@@ -1142,6 +1143,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!136 &3466082175559286190
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6470629956925445395}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.2320409
+  m_Height: 1.8865418
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.9285636, z: 0.021099672}
 --- !u!114 &3270745335097201301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1160,6 +1175,7 @@ MonoBehaviour:
   m_playerRb: {fileID: 7194259968075049988}
   m_joyStick: {fileID: 0}
   m_playerVariables: {fileID: 0}
+  m_playerShooting: {fileID: 0}
 --- !u!114 &7046949536015023693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1180,20 +1196,6 @@ MonoBehaviour:
   m_positionsHistory: []
   m_UIEvents: {fileID: 0}
   m_healthManager: {fileID: 0}
---- !u!136 &3466082175559286190
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6470629956925445395}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.2320409
-  m_Height: 1.8865418
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.9285636, z: 0.021099672}
 --- !u!114 &4377249849494532583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1209,6 +1211,35 @@ MonoBehaviour:
   healthStats: {fileID: 11400000, guid: 549e7cdbb6a9488409b02616dde00464, type: 2}
   currentHealth: 0
   isDead: 0
+--- !u!114 &6181285856241504328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6470629956925445395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79201899fd41daf49900ffdcc1103d28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_muzzleEnd: {fileID: 307941482729303625}
+  m_fireRate: 0.1
+  m_muzzleFlashEffect: {fileID: 4752394004500611409}
+  m_playerVariables: {fileID: 11400000, guid: 89967b929abef8240a84aa3475c38899, type: 2}
+  m_raycastOffsetHeight: 1
+  m_bullet: {fileID: 2457613622790934043, guid: 66a7690de63b47e448cb977d52c8588f, type: 3}
+  m_ammunitionPoolSize: 30
+  m_ammunitionPool: []
+  m_nearestEnemy: {fileID: 0}
+  m_enemyLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  m_zombieEvents: {fileID: 11400000, guid: 0416b87157499314d914076862ae4921, type: 2}
+  m_canSearchForEnemies: 1
+  m_enemyDetectionRange: 4
+  m_activatedZombiesList:
+  - {fileID: 0}
 --- !u!1 &6549778991052552745
 GameObject:
   m_ObjectHideFlags: 0
@@ -1758,3 +1789,8 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 904200334945143490, guid: 9defeac88977c0d448aa4541073ee9e4, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9defeac88977c0d448aa4541073ee9e4, type: 3}
+--- !u!1 &4752394004500611409 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1000010254994808, guid: 9defeac88977c0d448aa4541073ee9e4, type: 3}
+  m_PrefabInstance: {fileID: 4751412694801828905}
+  m_PrefabAsset: {fileID: 0}

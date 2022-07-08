@@ -6,23 +6,26 @@ public class TEST : MonoBehaviour
 {
 
 
-
-    public List<GameObject> lights;
-    public Transform endTransform;
-    public Transform playerTransform;
-    int index = 3;
-    private void Update()
+    private void Awake()
     {
-        float dist = Vector3.Distance(playerTransform.position, endTransform.position);
-
-        if (dist % 14 == 0)
-        {
-            SovereignUtils.Log($"Distance: {dist}, Modulo 14: {dist % 14}");
-            if (index >= lights.Count) return;
-            lights[index].SetActive(true);
-            index++;
-        }
+        Application.targetFrameRate = 30;
     }
+    //public List<GameObject> lights;
+    //public Transform endTransform;
+    //public Transform playerTransform;
+    //int index = 3;
+    //private void Update()
+    //{
+    //    float dist = Vector3.Distance(playerTransform.position, endTransform.position);
+
+    //    if (dist % 14 == 0)
+    //    {
+    //        SovereignUtils.Log($"Distance: {dist}, Modulo 14: {dist % 14}");
+    //        if (index >= lights.Count) return;
+    //        lights[index].SetActive(true);
+    //        index++;
+    //    }
+    //}
 
 
 

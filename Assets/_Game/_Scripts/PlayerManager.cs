@@ -34,7 +34,7 @@ namespace Naren_Dev
         private WaitForEndOfFrame m_waitForEndOfFrame = new WaitForEndOfFrame();
         //   [SerializeField] private PawnEventsSo m_pawnEventsSO;
         #endregion
-
+        public SimulatePawns simulatePawns;
         public static UnityAction<Transform> OnPawnCollidedWithObstacle;
 
         #region Unity Built-In Methods
@@ -100,7 +100,7 @@ namespace Naren_Dev
 
         private void _ApplySnakeMovement()
         {
-
+            if (!simulatePawns.control) return;
             // SovereignUtils.Log("LocalPose: " + m_attachPosition.localPosition + " Position: " + m_attachPosition.position);
             m_positionsHistory.Insert(0, transform.position);
             uint index = 0;
@@ -138,6 +138,7 @@ namespace Naren_Dev
 
             m_followingPawns[index].gameObject.SetActive(true);
             StartCoroutine(UpdateAtEndOfTheFrame());
+            simulatePawns.activePawns.Add(m_followingPawns[index].gameObject);
             index++;
             SovereignUtils.Log(" Index: " + index);
         }
@@ -149,6 +150,7 @@ namespace Naren_Dev
             {
                 SovereignUtils.Log(pawn.name + " in list and removing it." + " Index: " + index);
                 //  m_followingPawns.RemoveAt(m_followingPawns.Count - 1);
+                simulatePawns.activePawns.Remove(m_followingPawns[m_followingPawns.Count - 1].gameObject);
                 m_followingPawns[m_followingPawns.Count - 1].gameObject.SetActive(false);
                 index--;
                 StartCoroutine(UpdateAtEndOfTheFrame());

@@ -13,7 +13,7 @@ namespace Naren_Dev
         [Space(2.5f)]
         public UnityEvent<object> OnZombieActivated;
         public UnityEvent OnZombieAttacked;
-        public UnityEvent OnZombieDead;
+        public UnityEvent<object> OnZombieDead;
         public Action TriggerZombie;
         public Action TriggerIsolateZombie;
 
